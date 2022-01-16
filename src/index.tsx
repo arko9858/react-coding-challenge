@@ -2,10 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { MessageProvider } from './contexts/MessageContext'
+import { SnackbarProvider } from './contexts/SnackbarContext'
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <SnackbarProvider>
+      <MessageProvider>
+        <App />
+      </MessageProvider>
+    </SnackbarProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

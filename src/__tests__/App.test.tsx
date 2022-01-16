@@ -1,8 +1,8 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import App from '../App';
 
-test('renders learn react link', () => {
+test('renders App', () => {
   const comp = render(<App />);
   expect(comp).toBeTruthy();
 });
