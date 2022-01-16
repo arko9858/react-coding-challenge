@@ -1,4 +1,4 @@
-import React, { useReducer, createContext, useContext } from "react";
+import React, { useReducer, createContext, useContext, useEffect } from "react";
 import { Alert } from '@mui/material'
 import Snackbar from '@mui/material/Snackbar';
 
@@ -70,14 +70,30 @@ const SnackbarProvider: React.FC = ({ children }) => {
             payload: null
         });
     }
+    // to auto close snackbar after 2 seconds
+    useEffect(() => {
+        if (!state.open) return
+        let autoHideSnackbar: ReturnType<typeof setTimeout>;
+        autoHideSnackbar = setTimeout(() => {
+            dispatch({
+                type: ActionKind.close_snackbar,
+                payload: null
+            })
+        }, 2000);
+
+        return () => {
+            clearTimeout(autoHideSnackbar)
+        }
+    }, [state])
+
     return (
         <SnackbarContext.Provider value={{ openSnackbar }}>
-            <Snackbar open={state.open} onClose={handleClose} anchorOrigin={{ vertical: "top", horizontal: "right" }} autoHideDuration={2000}>
+            <Snackbar open={state.open} onClose={handleClose} anchorOrigin={{ vertical: "top", horizontal: "right" }} transitionDuration={{ enter: 500, exit: 500 }}>
                 <Alert severity="error" onClose={handleClose}>{state.message}</Alert>
             </Snackbar>
             {children}
         </SnackbarContext.Provider>
-    );
+    )
 };
 
 export { useSnackbarContext, SnackbarProvider };
